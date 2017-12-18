@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" id='htmlel'>
+<head>	
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+	<link href="css/custom.css" rel="stylesheet">
+	<title>VizWorkshop</title>
+</head>
+
+<body id="body">
+<input style="display:none;" id="openFile" type="file" accept=".json,.dae,.stl,.obj,.fbx" multiple />
+<div id="renderingSpace"></div>
+<div id="fileStatus"></div>
+
+<div id="menuButtons" style="display:none;">
+	<div class="btn-group left-buttons" role="group" aria-label="...">
+
+		<div class="btn-group" role="group" >
+		  <button class="btn btn-default dropdown-toggle btn-square" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			File <span class="caret"></span>	
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<li><a id="openFileButton" href="#">Load model</a></li>
+			<li><a id="clearModels" href="#">Clear models</a></li>
+			<li><a id="showSetupPage" href="#">Setup screens...</a></li>
+			<li><a id="showVRControlScreen" href="#">VR viewer setup...</a></li>
+		  </ul>
+		</div>
+		
+		<div class="btn-group" role="group" >
+		  <button class="btn btn-default dropdown-toggle btn-square" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			Edit <span class="caret"></span>	
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<li><a id="cuttingPlane" href="#">Add cut plane</a></li>
+			<li><a id="toggleNavMode" href="#">WASD + Mouse movement</a></li>
+		  </ul>
+		</div>
+		
+		<div class="btn-group" role="group" >
+		  <button class="btn btn-default dropdown-toggle btn-square" type="button" id="modelsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			View <span class="caret"></span>		
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="modelsDropdown">
+			<li><a id="fullscreenLink" href="#">Fullscreen</a></li>
+			<li><a id="resetview" href="#">Zoom all</a></li>
+			<li><a id="toggleShaderEffects" href="#">Visual quality show low</a></li>
+			<li><a id="setBackgroundButton" href="#">Background...</a></li>
+			<li><a id="framerateShow" href="#">Framerate show</a></li>
+		  </ul>
+		</div>
+		
+		<button class="btn btn-default btn-square" type="button" id="exitFullscreenButton">
+			Exit fullscreen
+		</button>
+	</div>
+</div>
+
+<div class="modal fade" id="screenConfigFormModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Setup Screen Sizes</h4>
+      </div>
+      <div class="modal-body" id="screenConfigForm-body">
+        Unintentionaly left blank
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="vr-control-screen" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">VR Viewer Cardboard Setup</h4>
+      </div>
+      <div class="modal-body" id="vr-control-screen-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="backgroundModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="background-control-body">
+	  <h4>Background Color</h4>
+        <div id="backgroundColorPicker" class="input-group colorpicker-component">
+			<input type="text" value="#00AABB" class="form-control" />
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="markerOverlay" id="markerHolder"></div>
+
+<script src="three.min.js"></script>
+<script src="stats.min.js"></script>
+<script src="jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script src="colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+
+<script src="TrackballControls.js"></script>
+<script src="threejsextras/FlyControlsDesktop.js"></script>
+
+<script src="GrabModels.js"></script>
+<script src="ARMarker3DView.js"></script>
+<script src="Monitor3DView.js"></script>
+<script src="MonitorSizeControl.js"></script>
+<script src="WandView.js"></script>
+<script src="WandController.js"></script>
+<script src="WandCameraRigView.js"></script>
+<script src="event_emitter.min.js"></script>
+<script src="../shared/WandModel.js"></script>
+
+<script src="Grabable.js"></script>
+<script src="CutPlane.js"></script>
+
+<script src="threejsextras/shaders/SSAOShader.js"></script>
+<script src="threejsextras/shaders/CopyShader.js"></script>
+<script src="threejsextras/SkyShader.js"></script>
+
+<script src="threejsextras/postprocessing/EffectComposer.js"></script>
+<script src="threejsextras/postprocessing/RenderPass.js"></script>
+<script src="threejsextras/postprocessing/ShaderPass.js"></script>
+<script src="threejsextras/postprocessing/MaskPass.js"></script>
+
+<script type="text/javascript" src="qrcode.min.js"></script>
+<script src="WindowManagerNW.js"></script>
+
+<script src="ViewerMain.js"></script> <!--  order of this guy must become before other (loader?) stuff or max stack reached error-->
+<script src="loader.js"></script><!-- order of this must be before loaders-->
+<script src="loaders/ColladaLoader.js"></script>
+<script src="loaders/OBJLoader.js"></script>
+<script src="loaders/MTLLoaderRobust.js"></script>
+<script src="loaders/STLLoader.js"></script>
+<script src="loaders/curves/NURBSCurve.js"></script>
+<script src="loaders/curves/NURBSSurface.js"></script>
+<script src="loaders/curves/NURBSUtils.js"></script>
+<script src="loaders/FBXLoader.js"></script>
+
+</body>
+
+</html>

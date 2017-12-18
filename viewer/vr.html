@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>WebVR VizWorkshop</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+  margin: 0px;
+  padding: 0;
+  overflow: hidden;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+}
+
+#buttons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: white;
+}
+
+#ui {
+	color: white;
+	text-align: center;
+	z-index: 1;
+	position: absolute;
+	top: 3%;
+	left: 3%;
+}
+
+
+a {
+	color: white;
+}
+
+#exit {
+	display: none;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	color: white;
+	font-size: 25px;
+	text-decoration: none;
+	z-index: 2;
+}
+</style>
+</head>
+
+<body>
+
+	<div id="ui">
+		<div id="button"></div>
+	</div>
+	<a href="#" id="exit" onclick="enterVR.requestExit()">✕</a>
+
+</body>
+
+<script>
+WebVRConfig = {
+  // Scales the recommended buffer size reported by WebVR, which can improve performance.
+  
+  BUFFER_SCALE: 0.5, <!-- default .5  moving this to 1.0 decreases visual aliasing/jaggies -->
+  
+  // Flag to disable touch panner. In case you have your own touch controls.
+  TOUCH_PANNER_DISABLED: false, // Default: true.
+  
+  // Complementary filter coefficient. 0 for accelerometer, 1 for gyro.
+  K_FILTER: 0.98, // Default: 0.98.
+};
+
+document.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+});
+</script>
+
+<script src="three.min.js"></script>
+
+<!-- VRControls.js applies the WebVR transformations to a three.js camera object. -->
+<script src="threejsextras/VRControls.js"></script>
+
+<!-- VREffect.js handles stereo camera setup and rendering.  -->
+<script src="threejsextras/VREffect.js"></script>
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="event_emitter.min.js"></script>
+
+<script src="Grabable.js"></script>
+<script src="CutPlane.js"></script>
+
+<script src="loader.js"></script><!-- order of this must be before loaders-->
+<script src="loaders/ColladaLoader.js"></script>
+<script src="loaders/OBJLoader.js"></script>
+<script src="loaders/MTLLoaderRobust.js"></script>
+<script src="loaders/STLLoader.js"></script>
+<script src="loaders/curves/NURBSCurve.js"></script>
+<script src="loaders/curves/NURBSUtils.js"></script>
+<script src="loaders/FBXLoader.js"></script>
+
+<script src="WandView.js"></script>
+<script src="WandController.js"></script>
+<script src="../shared/WandModel.js"></script>
+<script src="VRControlerWandHeadset.js"></script>
+
+<script src="WorldView.js"></script>
+
+<script src="webvr-polyfill.min.js"></script>
+<script src="webvr-ui.min.js"></script>
+<script src="ViewerVR.js"></script>
+
+
+</html>
